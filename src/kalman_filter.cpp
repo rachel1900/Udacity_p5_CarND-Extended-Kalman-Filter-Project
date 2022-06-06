@@ -1,4 +1,5 @@
 #include "kalman_filter.h"
+#include <math.h>       /* atan2 */
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -58,7 +59,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     //Instead, for extended Kalman filters, we'll use the h function directly to map predicted locations x'x from Cartesian to polar coordinates.
     
     double rho = sqrt(x_(0)*x_(0) + x_(1)*x_(1));
-    double phi = atan(x_(1) / x_(0));
+    //double phi = atan(x_(1) / x_(0));
+    double phi = atan2(x_(1) , x_(0)); // Principal arc tangent of y/x, in the interval [-pi,+pi] radians.
     double rho_dot = (x_(0)*x_(2) + x_(1)*x_(3)) / rho;
     
     VectorXd hx_ = VectorXd(3);
